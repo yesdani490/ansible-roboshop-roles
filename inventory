@@ -1,0 +1,29 @@
+[mongodb]
+mongodb.joindevops.top
+
+[catalogue]
+catalogue.joindevops.top
+
+[web]
+web.joindevops.top
+
+[redis]
+redis.joindevops.top
+
+[cart]
+cart.joindevops.top
+ 
+ [user]
+ user.joindevops.top
+
+ [shipping]
+ shipping.joindevops.top
+
+ [mysql]
+ mysql.joindevops.top
+
+ [payment]
+ payment.joindevops.top
+
+ [rabbitmq]
+ rabbitmq.joindevops.top
