@@ -1,0 +1,5 @@
+CATALOGUE_HOST: catalogue.joindevops.top
+CART_HOST: cart.joindevops.top
+USER_HOST: user.joindevops.top
+SHIPPING_HOST: shipping.joindevops.top
+PAYMENT_HOST: payment.joindevops.top
