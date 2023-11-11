@@ -11,7 +11,7 @@
     tasks_from: app-setup
 
  - name: install dependencies
-   ansible.builtin.command: maven clean package
+   ansible.builtin.command: mvn clean package
    args:
       chdir: /app
 
