@@ -29,7 +29,7 @@
       url: "https://roboshop-builds.s3.amazonaws.com/{{component}}.zip"
       dest: /tmp
 
-- name: extract {{component}} artifact
+- name: extract "{{component}}" artifact
   ansible.builtin.unarchive:
       src: /tmp/{{component}}.zip
       dest: /app
