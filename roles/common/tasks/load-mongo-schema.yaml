@@ -9,4 +9,4 @@
       state: installed
 
 - name: load {{component}} data
-  ansible.builtin.shell: mongo --host mongodb.joindevops.top < /app/db/{{component}}.js
+  ansible.builtin.shell: mongo --host mongodb.joindevops.top < /app/schema/{{component}}.js

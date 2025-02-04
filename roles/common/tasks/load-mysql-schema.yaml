@@ -4,5 +4,5 @@
       state: installed
 
 - name: load mysql schema
-  ansible.builtin.shell: mysql -h mysql.joindevops.top -uroot -pRoboShop@1 < /app/db/{{component}}.sql 
+  ansible.builtin.shell: mysql -h mysql.joindevops.top -uroot -pRoboShop@1 < /app/{{component}}.sql 
   
