@@ -1,36 +1,45 @@
-- name: check roboshop user exist or not
+- name: Check if roboshop user exists
   ansible.builtin.command: id roboshop
-  register: out #output is variable name
+  register: out
   ignore_errors: true
 
-- when: out.rc != 0
-  name: create user roboshop
-  become: true # we need sudo access for this task only
+- name: Create roboshop user if not exists
   ansible.builtin.user:
-      name: roboshop
+    name: roboshop
+  become: true
+  when: out.rc is defined and out.rc != 0
 
-- name: check /app directory exists or not
+- name: Check if /app directory exists
   ansible.builtin.stat:
-      path: /app
+    path: /app
   register: directory
 
-- name: print the directory stats
+- name: Print the directory stats
   ansible.builtin.debug:
-      msg: "output: {{directory}}"
+    msg: "Output: {{ directory }}"
 
-- when: directory.stat.exists == False
-  name: create /app directory
+- name: Create /app directory if not exists
   ansible.builtin.file:
-      path: /app
-      state: directory
+    path: /app
+    state: directory
+    owner: roboshop
+    group: roboshop
+    mode: '0755'
+  become: true
+  when: directory.stat.exists | default(false) == false
 
-- name: "download {{component}} artifact"
+- name: Download {{ component }} artifact
   ansible.builtin.get_url:
-      url: "https://roboshop-builds.s3.amazonaws.com/{{component}}.zip"
-      dest: /tmp
+    url: "https://roboshop-builds.s3.amazonaws.com/{{ component }}.zip"
+    dest: /tmp
+  when: component is defined
 
-- name: extract {{component}} artifact
+- name: Extract {{ component }} artifact
   ansible.builtin.unarchive:
-      src: /tmp/{{component}}.zip
-      dest: /app
-      remote_src: yes
+    src: /tmp/{{ component }}.zip
+    dest: /app
+    owner: roboshop
+    group: roboshop
+    remote_src: yes
+  become: true
+  when: component is defined
