@@ -1,27 +1,30 @@
+- name: Install Redis repository
+  ansible.builtin.yum:
+    name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+    state: present
+    disable_gpg_check: true
 
-  - name: Install redis repo
-    ansible.builtin.yum:
-      name: https://rpms.remirepo.net/enterprise/remi-release-8.rpm
-      state: installed
-      disable_gpg_check: true
+- name: Enable Redis 6.2
+  ansible.builtin.command: yum module enable redis:remi-6.2 -y
+  changed_when: false  # Prevents Ansible from marking this task as changed every run
 
-  - name: Enable redis 6.2
-    ansible.builtin.command: yum module enable redis:remi-6.2 -y
+- name: Install Redis
+  ansible.builtin.yum:
+    name: redis
+    state: present  # Use 'present' instead of 'installed' for consistency
 
-  - name: Install redis
-    ansible.builtin.yum:
-      name: redis
-      state: installed
-  
-  - name: Allow remote connections to redis
-    ansible.builtin.replace:
-      path: /etc/redis.conf
-      regexp: '127.0.0.1'
-      replace: '0.0.0.0'
+- name: Allow remote connections to Redis
+  ansible.builtin.replace:
+    path: /etc/redis.conf
+    regexp: '^bind 127.0.0.1'  # Ensures only the bind setting is changed
+    replace: 'bind 0.0.0.0'
 
-  - name: start and enable redis
-    ansible.builtin.service:
-      name: redis
-      state: started
-      enabled: yes
+- name: Restart Redis to apply changes
+  ansible.builtin.service:
+    name: redis
+    state: restarted
 
+- name: Enable Redis service on boot
+  ansible.builtin.service:
+    name: redis
+    enabled: yes
