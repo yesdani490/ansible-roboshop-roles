@@ -17,6 +17,15 @@
    ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar
    args:
       chdir: /app 
+ - name: Check if master-data.sql exists
+   ansible.builtin.stat:
+    path: /app/db/master-data.sql
+   register: master_data_file
+
+ - name: Rename master-data.sql to shipping.sql
+   ansible.builtin.command: mv /app/db/master-data.sql /app/db/shipping.sql
+   when: master_data_file.stat.exists
+
  - name: load mysql schema
    ansible.builtin.import_role:
     name: common
